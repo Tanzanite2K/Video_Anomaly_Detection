@@ -207,6 +207,16 @@ This project focuses on improving large-scale surveillance intelligence through 
 
 ---
 
+## Interface 
+
+<img width="1901" height="898" alt="image" src="https://github.com/user-attachments/assets/db574adb-5b68-4e22-9dac-125bab0a5edd" />
+<img width="1899" height="904" alt="image" src="https://github.com/user-attachments/assets/28936185-570c-4ff0-989c-d3f856a92117" />
+<img width="1502" height="913" alt="image" src="https://github.com/user-attachments/assets/e3634eb2-1c56-417f-8856-5de82275e0b9" />
+<img width="1201" height="783" alt="image" src="https://github.com/user-attachments/assets/b1b335df-4127-441e-a7a4-caceafaf7371" />
+<img width="1402" height="905" alt="image" src="https://github.com/user-attachments/assets/b8f392c2-d589-4e69-a94c-a2d659ab4e5d" />
+<img width="645" height="843" alt="image" src="https://github.com/user-attachments/assets/636a14bc-f86c-4e80-895e-dc811f9c60e1" />
+
+
 ## Future Enhancements
 
 * Real-Time CCTV Stream Detection
@@ -226,4 +236,3 @@ Karri Pavan Prabhas
 
 ## GitHub Repository
 
-[Video Anomaly Detection Repository](https://github.com/Tanzanite2K/Video_Anomaly_Detection?utm_source=chatgpt.com)
