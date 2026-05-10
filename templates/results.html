@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detection Results - SentinelX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        font-family: "Inter", sans-serif;
+      }
+
+      .gradient-bg {
+        background: linear-gradient(
+          135deg,
+          #0f172a 0%,
+          #1f2937 50%,
+          #111827 100%
+        );
+      }
+
+      .fade-in {
+        animation: fadeIn 0.6s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .pulse-animation {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      .timeline-item {
+        position: relative;
+        padding-left: 30px;
+      }
+
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: #cbd5e1;
+      }
+
+      .timeline-item::after {
+        content: "";
+        position: absolute;
+        left: -4px;
+        top: 6px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #3b82f6;
+      }
+
+      .timeline-item.anomaly::after {
+        background: #ef4444;
+      }
+
+      #uploaded-image {
+        max-height: 500px;
+        max-width: 100%;
+        object-fit: contain;
+      }
+
+      #uploaded-video {
+        max-height: 500px;
+        width: 100%;
+        background: #000;
+      }
+    </style>
+  </head>
+  <body class="gradient-bg min-h-screen">
+    <nav class="bg-white/80 backdrop-blur-md shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center space-x-3">
+            <div
+              class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center"
+            >
+              <svg
+                class="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+            </div>
+            <span class="text-xl font-bold text-gray-900">SentinelX</span>
+          </div>
+
+          <div class="flex items-center space-x-6">
+            <a
+              href="/dashboard"
+              class="text-gray-700 hover:text-blue-600 font-medium transition"
+              >Dashboard</a
+            >
+            <a
+              href="/history"
+              class="text-gray-700 hover:text-blue-600 font-medium transition"
+              >History</a
+            >
+            <a
+              href="/logout"
+              class="text-gray-700 hover:text-red-600 font-medium transition"
+              >Logout</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="mb-8 fade-in">
+        <a
+          href="/dashboard"
+          class="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center space-x-2 mb-4"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
+          </svg>
+          <span>Back to Dashboard</span>
+        </a>
+        <h1 class="text-4xl font-bold text-red-500 mb-2">Detection Results</h1>
+        <p class="text-lg text-white">
+          Analysis complete for {{ prediction.filename }}
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 space-y-6">
+          <div class="bg-white rounded-2xl shadow-xl p-8 fade-in">
+            {% if prediction.result == 'Normal' %}
+            <div class="flex items-center space-x-4 mb-6">
+              <div
+                class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center"
+              >
+                <svg
+                  class="w-8 h-8 text-green-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-3xl font-bold text-green-600">
+                  Normal Activity
+                </h2>
+                <p class="text-gray-600">No anomalies detected</p>
+              </div>
+            </div>
+            {% else %}
+            <div class="flex items-center space-x-4 mb-6">
+              <div
+                class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center pulse-animation"
+              >
+                <svg
+                  class="w-8 h-8 text-red-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-3xl font-bold text-red-600">
+                  Anomaly Detected
+                </h2>
+                <p class="text-gray-600">Suspicious activity identified</p>
+              </div>
+            </div>
+            {% endif %}
+
+            <div class="grid md:grid-cols-2 gap-6">
+              <div
+                class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6"
+              >
+                <div class="text-sm text-gray-600 mb-2">Detection Result</div>
+                <div
+                  class="text-2xl font-bold {% if prediction.result == 'Normal' %}text-green-600{% else %}text-red-600{% endif %}"
+                >
+                  {{ prediction.result }}
+                </div>
+              </div>
+
+              <div
+                class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6"
+              >
+                <div class="text-sm text-gray-600 mb-2">Anomaly Type</div>
+                <div class="text-2xl font-bold text-gray-900">
+                  {{ prediction.anomaly_type }}
+                </div>
+              </div>
+
+              <div
+                class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6"
+              >
+                <div class="text-sm text-gray-600 mb-2">Confidence Score</div>
+                <div class="text-2xl font-bold text-blue-600">
+                  {{ "%.2f"|format(prediction.confidence_score * 100) }}%
+                </div>
+              </div>
+
+              <div
+                class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6"
+              >
+                <div class="text-sm text-gray-600 mb-2">File Type</div>
+                <div class="text-2xl font-bold text-gray-900">
+                  {{ prediction.file_type|upper }}
+                </div>
+              </div>
+              <div
+                class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6"
+              >
+                <div class="text-sm text-gray-600 mb-2">Detection Time</div>
+                <div class="text-2xl font-bold text-gray-900">
+                  {{ prediction.detection_time }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% if prediction.file_type == 'image' %}
+          <div
+            class="bg-white rounded-2xl shadow-xl p-8 fade-in"
+            style="animation-delay: 0.1s"
+          >
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Uploaded Image</h3>
+            <div
+              class="bg-gray-100 rounded-xl p-4 flex justify-center items-center"
+            >
+              <img
+                id="uploaded-image"
+                src="{{ url_for('uploaded_file', filename=prediction.filename) }}"
+                alt="Uploaded Image"
+                class="rounded-lg shadow-lg"
+              />
+            </div>
+          </div>
+          {% endif %} {% if prediction.file_type == 'video' %}
+          <div
+            class="bg-white rounded-2xl shadow-xl p-8 fade-in"
+            style="animation-delay: 0.1s"
+          >
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Video Analysis</h3>
+
+            <div class="bg-gray-100 rounded-xl p-4 mb-6">
+              <video
+                id="uploaded-video"
+                controls
+                preload="auto"
+                class="w-full rounded-lg shadow-lg"
+                style="background: #000"
+              >
+                <source
+                  src="{{ url_for('uploaded_file', filename=prediction.filename) }}"
+                  type="video/mp4"
+                />
+                Your browser does not support video playback.
+              </video>
+              <p class="text-sm text-gray-500 mt-2 text-center">
+                If video doesn't play, the format may not be supported by your
+                browser.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-3 gap-4 mb-6">
+              <div class="bg-blue-50 rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-blue-600">
+                  {{ prediction.analyzed_frames }}
+                </div>
+                <div class="text-xs text-gray-600">Frames Analyzed</div>
+              </div>
+              <div class="bg-red-50 rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-red-600">
+                  {{ prediction.abnormal_frames_count }}
+                </div>
+                <div class="text-xs text-gray-600">Abnormal Frames</div>
+              </div>
+              <div class="bg-green-50 rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-green-600">
+                  {{ prediction.analyzed_frames -
+                  prediction.abnormal_frames_count }}
+                </div>
+                <div class="text-xs text-gray-600">Normal Frames</div>
+              </div>
+            </div>
+
+            {% if prediction.segments %}
+            <div class="mb-6">
+              <h4 class="font-bold text-gray-900 mb-3">Anomaly Segments</h4>
+              <div class="space-y-2">
+                {% for segment in prediction.segments %}
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                      <svg
+                        class="w-5 h-5 text-red-600"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      <span class="font-semibold text-gray-900"
+                        >{{ segment.anomaly_type }}</span
+                      >
+                    </div>
+                    <span class="text-sm text-gray-600"
+                      >{{ "%.2f"|format(segment.start) }}s - {{
+                      "%.2f"|format(segment.end) }}s</span
+                    >
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+
+            <div>
+              <h4 class="font-bold text-gray-900 mb-3">
+                Frame-by-Frame Timeline
+              </h4>
+              <div class="max-h-96 overflow-y-auto bg-gray-50 rounded-lg p-4">
+                <div class="space-y-3">
+                  {% for frame in prediction.frame_details[:20] %}
+                  <div
+                    class="timeline-item {% if not frame.is_normal %}anomaly{% endif %}"
+                  >
+                    <div class="bg-white rounded-lg p-3 shadow-sm">
+                      <div class="flex items-center justify-between">
+                        <div>
+                          <div class="font-medium text-gray-900">
+                            Frame {{ frame.frame_number }}
+                          </div>
+                          <div
+                            class="text-sm {% if frame.is_normal %}text-green-600{% else %}text-red-600{% endif %}"
+                          >
+                            {{ frame.anomaly_type }}
+                          </div>
+                        </div>
+                        <div class="text-right">
+                          <div class="text-sm text-gray-600">
+                            {{ "%.2f"|format(frame.timestamp) }}s
+                          </div>
+                          <div class="text-xs text-gray-500">
+                            {{ "%.1f"|format(frame.confidence_score * 100) }}%
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %} {% if prediction.frame_details|length > 20 %}
+                  <div class="text-center text-sm text-gray-500 py-2">
+                    And {{ prediction.frame_details|length - 20 }} more
+                    frames...
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="space-y-6">
+          <div
+            class="bg-white rounded-2xl shadow-xl p-6 fade-in"
+            style="animation-delay: 0.2s"
+          >
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Quick Actions</h3>
+            <div class="space-y-3">
+              <a
+                href="/dashboard"
+                class="block w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold text-center transition"
+              >
+                New Detection
+              </a>
+              <a
+                href="/history"
+                class="block w-full bg-gray-100 hover:bg-gray-200 text-gray-900 py-3 rounded-lg font-semibold text-center transition"
+              >
+                View History
+              </a>
+            </div>
+          </div>
+
+          <div
+            class="bg-white rounded-2xl shadow-xl p-6 fade-in"
+            style="animation-delay: 0.3s"
+          >
+            <h3 class="text-lg font-bold text-gray-900 mb-4">Detection Info</h3>
+            <div class="space-y-3 text-sm">
+              <div
+                class="flex items-center justify-between py-2 border-b border-gray-100"
+              >
+                <span class="text-gray-600">Model Accuracy</span>
+                <span class="font-semibold text-gray-900">97.8%</span>
+              </div>
+
+              <div class="flex items-center justify-between py-2">
+                <span class="text-gray-600">Processing Time</span>
+                <span class="font-semibold text-gray-900">Real-time</span>
+              </div>
+            </div>
+          </div>
+
+          {% if prediction.result == 'Abnormal' %}
+          <div
+            class="bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl shadow-xl p-6 border-2 border-red-200 fade-in"
+            style="animation-delay: 0.4s"
+          >
+            <div class="flex items-center space-x-3 mb-4">
+              <svg
+                class="w-6 h-6 text-red-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                />
+              </svg>
+              <h3 class="text-lg font-bold text-red-900">Alert Active</h3>
+            </div>
+            <p class="text-sm text-red-800 mb-4">
+              An anomaly has been detected. Please review the footage and take
+              appropriate action if necessary.
+            </p>
+            <button
+              onclick="playAlert()"
+              class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg font-semibold transition"
+            >
+              Play Alert Sound
+            </button>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {% if prediction.result == 'Abnormal' %}
+    <audio id="alert-sound" preload="auto">
+      <source
+        src="{{ url_for('serve_static', filename='siren.mp3') }}"
+        type="audio/mpeg"
+      />
+      <source
+        src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"
+        type="audio/mpeg"
+      />
+    </audio>
+    <script>
+      function playAlert() {
+        const audio = document.getElementById("alert-sound");
+        if (audio) {
+          audio.currentTime = 0;
+          audio.play().catch((err) => {
+            console.log("Audio play failed:", err);
+          });
+          setTimeout(() => {
+            audio.pause();
+            audio.currentTime = 0;
+          }, 3000);
+        }
+      }
+
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          playAlert();
+        }, 500);
+      });
+    </script>
+    {% endif %}
+
+    <script>
+      const video = document.getElementById("uploaded-video");
+      if (video) {
+        video.addEventListener("error", function (e) {
+          console.error("Video error:", e);
+          console.error("Video source:", video.currentSrc);
+          console.error(
+            "Error code:",
+            video.error ? video.error.code : "unknown",
+          );
+        });
+
+        video.addEventListener("loadedmetadata", function () {
+          console.log("Video loaded successfully");
+          console.log("Duration:", video.duration);
+        });
+
+        video.addEventListener("loadeddata", function () {
+          console.log("Video data loaded");
+        });
+      }
+    </script>
+  </body>
+</html>

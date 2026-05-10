@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - SentinelX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        font-family: "Inter", sans-serif;
+      }
+
+      .gradient-bg {
+        background: linear-gradient(
+          135deg,
+          #0f172a 0%,
+          #1f2937 50%,
+          #111827 100%
+        );
+      }
+
+      .card-hover {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .card-hover:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.25);
+      }
+
+      .fade-in {
+        animation: fadeIn 0.6s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body class="gradient-bg min-h-screen">
+    <nav class="bg-white/80 backdrop-blur-md shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center space-x-3">
+            <div
+              class="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center"
+            >
+              <svg
+                class="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+            </div>
+            <span class="text-xl font-bold text-gray-900">SentinelX</span>
+          </div>
+
+          <div class="flex items-center space-x-6">
+            <a href="/dashboard" class="text-blue-600 font-semibold"
+              >Dashboard</a
+            >
+            <a
+              href="/history"
+              class="text-gray-700 hover:text-blue-600 font-medium transition"
+              >History</a
+            >
+            <div class="flex items-center space-x-3">
+              <div
+                class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center"
+              >
+                <span class="text-blue-700 font-semibold"
+                  >{{ username[0].upper() }}</span
+                >
+              </div>
+              <a
+                href="/logout"
+                class="text-gray-700 hover:text-red-600 font-medium transition"
+                >Logout</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="mb-12 fade-in">
+        <h1 class="text-4xl font-bold text-red-500 mb-2">
+          Welcome back, {{ username }}!
+        </h1>
+        <p class="text-lg text-white">
+          Choose how you want to detect anomalies
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 mb-12">
+        <a
+          href="/image"
+          class="card-hover bg-white rounded-2xl p-8 shadow-xl fade-in block"
+        >
+          <div class="flex items-start justify-between mb-6">
+            <div
+              class="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center"
+            >
+              <svg
+                class="w-8 h-8 text-blue-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+            <div
+              class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold"
+            >
+              Image
+            </div>
+          </div>
+
+          <h2 class="text-2xl font-bold text-gray-900 mb-3">Upload Image</h2>
+          <p class="text-gray-600 mb-6">
+            Analyze a single image for anomaly detection. Get instant results
+            with confidence scores.
+          </p>
+
+          <div class="mt-6 flex items-center justify-between">
+            <span class="text-blue-600 font-semibold">Start Detection</span>
+            <svg
+              class="w-5 h-5 text-blue-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+              />
+            </svg>
+          </div>
+        </a>
+
+        <a
+          href="/video"
+          class="card-hover bg-white rounded-2xl p-8 shadow-xl fade-in block"
+          style="animation-delay: 0.1s"
+        >
+          <div class="flex items-start justify-between mb-6">
+            <div
+              class="w-16 h-16 bg-gradient-to-br from-cyan-100 to-cyan-200 rounded-xl flex items-center justify-center"
+            >
+              <svg
+                class="w-8 h-8 text-cyan-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+            <div
+              class="bg-cyan-100 text-cyan-700 px-3 py-1 rounded-full text-sm font-semibold"
+            >
+              Video
+            </div>
+          </div>
+
+          <h2 class="text-2xl font-bold text-gray-900 mb-3">Upload Video</h2>
+          <p class="text-gray-600 mb-6">
+            Analyze video footage with frame-by-frame detection. Identify exact
+            timestamps of anomalies.
+          </p>
+
+          <div class="mt-6 flex items-center justify-between">
+            <span class="text-cyan-600 font-semibold">Start Detection</span>
+            <svg
+              class="w-5 h-5 text-cyan-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+              />
+            </svg>
+          </div>
+        </a>
+      </div>
+
+      <div
+        class="bg-white rounded-2xl p-8 shadow-xl fade-in"
+        style="animation-delay: 0.2s"
+      >
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">
+          Detection Capabilities
+        </h2>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6">
+            <div class="text-3xl mb-3"></div>
+            <h3 class="font-bold text-gray-900 mb-2">Abuse</h3>
+            <p class="text-sm text-gray-600">
+              Detect violent and abusive behavior
+            </p>
+          </div>
+
+          <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6">
+            <div class="text-3xl mb-3"></div>
+            <h3 class="font-bold text-gray-900 mb-2">Assault</h3>
+            <p class="text-sm text-gray-600">
+              Identify physical assault incidents
+            </p>
+          </div>
+
+          <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6">
+            <div class="text-3xl mb-3"></div>
+            <h3 class="font-bold text-gray-900 mb-2">Burglary</h3>
+            <p class="text-sm text-gray-600">Detect break-ins and burglaries</p>
+          </div>
+
+          <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6">
+            <div class="text-3xl mb-3"></div>
+            <h3 class="font-bold text-gray-900 mb-2">Explosion</h3>
+            <p class="text-sm text-gray-600">Identify explosive incidents</p>
+          </div>
+
+          <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6">
+            <div class="text-3xl mb-3"></div>
+            <h3 class="font-bold text-gray-900 mb-2">Fighting</h3>
+            <p class="text-sm text-gray-600">Detect physical altercations</p>
+          </div>
+
+          <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6">
+            <div class="text-3xl mb-3"></div>
+            <h3 class="font-bold text-gray-900 mb-2">Shooting</h3>
+            <p class="text-sm text-gray-600">Identify firearm incidents</p>
+          </div>
+
+          <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6">
+            <div class="text-3xl mb-3"></div>
+            <h3 class="font-bold text-gray-900 mb-2">Shoplifting</h3>
+            <p class="text-sm text-gray-600">Detect theft in retail settings</p>
+          </div>
+
+          <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6">
+            <div class="text-3xl mb-3"></div>
+            <h3 class="font-bold text-gray-900 mb-2">Stealing</h3>
+            <p class="text-sm text-gray-600">Identify theft and stealing</p>
+          </div>
+
+          <div
+            class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6"
+          >
+            <div class="text-3xl mb-3"></div>
+            <h3 class="font-bold text-gray-900 mb-2">Normal</h3>
+            <p class="text-sm text-gray-600">Identify normal activities</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
